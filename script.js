@@ -11,36 +11,20 @@
   };
 
   const PAGE_SIZE_FALLBACK = 8;
-  const CHECKLIST_SELECTOR = "[data-checklist]";
-
-  const isPlainObject = (value) =>
-    value !== null && typeof value === "object" && !Array.isArray(value);
-
   const text = (value, limit = 80) => String(value || "").trim().slice(0, limit);
-  const slugify = (value) =>
-    text(value, 64)
-      .toLocaleLowerCase("ko-KR")
-      .replace(/[^a-z0-9가-힣]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+  const isObject = (value) => value && typeof value === "object" && !Array.isArray(value);
 
-  function renderIcons() {
-    document.querySelectorAll("[data-icon]").forEach((node) => {
-      const svg = ICONS[node.dataset.icon];
-      if (svg) node.innerHTML = svg;
-    });
-  }
-
-  async function fetchJson(path) {
-    const response = await fetch(path, { cache: "no-cache" });
-    if (!response.ok) throw new Error(`${path} 파일을 불러오지 못했습니다.`);
-    return response.json();
+  function create(tag, className, content) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (content !== undefined) node.textContent = content;
+    return node;
   }
 
   function readObject(key) {
     try {
-      const value = localStorage.getItem(key);
-      const parsed = value ? JSON.parse(value) : {};
-      return isPlainObject(parsed) ? parsed : {};
+      const parsed = JSON.parse(localStorage.getItem(key) || "{}");
+      return isObject(parsed) ? parsed : {};
     } catch {
       return {};
     }
@@ -50,40 +34,26 @@
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      // 저장이 차단된 환경에서도 화면 조작은 계속 가능해야 합니다.
+      // 저장이 차단된 환경에서도 체크리스트 조작은 계속 가능해야 합니다.
     }
   }
 
-  function create(tag, className, content) {
-    const element = document.createElement(tag);
-    if (className) element.className = className;
-    if (content !== undefined) element.textContent = content;
-    return element;
-  }
-
   function makeId(prefix) {
-    const time = Date.now().toString(36);
-    const random = Math.random().toString(36).slice(2, 7);
-    return `${prefix}-custom-${time}-${random}`;
+    return `${prefix}-custom-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
   }
 
-  function normalizeCustomItems(custom, categoryIds) {
-    const normalized = {};
-    categoryIds.forEach((categoryId) => {
-      const items = Array.isArray(custom[categoryId]) ? custom[categoryId] : [];
-      normalized[categoryId] = items
-        .filter((item) => item && typeof item.id === "string")
-        .map((item) => ({ id: item.id, text: text(item.text, 32) }))
-        .filter((item) => item.text);
+  function renderIcons() {
+    document.querySelectorAll("[data-icon]").forEach((node) => {
+      const icon = ICONS[node.dataset.icon];
+      if (icon) node.innerHTML = icon;
     });
-    return normalized;
   }
 
-  function buildCheckItem(item, checked, isCustom = false) {
+  function customItemNode(item, checked) {
     const id = text(item.id, 96);
-    const li = create("li", `check-item${isCustom ? " custom-item" : ""}`);
+    const li = create("li", "check-item custom-item");
     li.dataset.id = id;
-    if (isCustom) li.dataset.custom = "true";
+    li.dataset.custom = "true";
 
     const row = create("div", "check-row");
     const input = create("input", "item-check");
@@ -98,88 +68,39 @@
 
     const copy = create("label", "item-copy");
     copy.htmlFor = id;
-    const title = create("strong", "item-title", isCustom ? item.text : item.title);
-    const description = create("em", "", isCustom ? "직접 추가한 항목" : item.description);
-    copy.append(title, description);
+    copy.append(create("strong", "item-title", item.text), create("em", "", "직접 추가한 항목"));
 
-    row.append(input, fake, copy);
-    if (isCustom) {
-      const actions = create("span", "custom-actions");
-      actions.setAttribute("aria-label", "직접 추가 항목 관리");
-      const edit = create("button", "", "수정");
-      const remove = create("button", "", "삭제");
-      edit.type = "button";
-      remove.type = "button";
-      edit.dataset.action = "edit-custom";
-      remove.dataset.action = "delete-custom";
-      actions.append(edit, remove);
-      row.append(actions);
-    }
+    const actions = create("span", "custom-actions");
+    actions.setAttribute("aria-label", "직접 추가 항목 관리");
+    const edit = create("button", "", "수정");
+    const remove = create("button", "", "삭제");
+    edit.type = "button";
+    remove.type = "button";
+    edit.dataset.action = "edit-custom";
+    remove.dataset.action = "delete-custom";
+    actions.append(edit, remove);
+
+    row.append(input, fake, copy, actions);
     li.append(row);
     return li;
-  }
-
-  function buildCategory(branch, category, checked, customItems) {
-    const categoryId = text(category.id, 40);
-    const article = create("article", "category");
-    article.dataset.category = categoryId;
-
-    const head = create("div", "category-head");
-    const copy = create("div");
-    copy.append(create("h3", "", category.title), create("p", "", category.description));
-
-    const addButton = create("button", "add-button");
-    addButton.type = "button";
-    addButton.dataset.action = "toggle-add";
-    addButton.setAttribute("aria-label", `${category.title}에 항목 추가`);
-    addButton.append(create("span", "add-plus"));
-    addButton.firstElementChild?.setAttribute("aria-hidden", "true");
-    head.append(copy, addButton);
-
-    const form = create("form", "add-form");
-    form.dataset.addForm = "";
-    form.hidden = true;
-    const inputId = `add-${branch}-${categoryId}`;
-    const label = create("label", "sr-only", `${category.title} 준비물 추가`);
-    label.htmlFor = inputId;
-    const input = create("input");
-    input.id = inputId;
-    input.name = "item";
-    input.type = "text";
-    input.maxLength = 32;
-    input.autocomplete = "off";
-    input.placeholder = "준비물 이름";
-    const submit = create("button", "", "추가");
-    submit.type = "submit";
-    form.append(label, input, submit);
-
-    const list = create("ul", "item-list");
-    const baseItems = Array.isArray(category.items) ? category.items : [];
-    baseItems
-      .map((item, index) => ({
-        id: text(item?.id, 96) || `${branch}-${categoryId}-${slugify(item?.title) || `item-${index + 1}`}`,
-        title: text(item?.title, 80),
-        description: text(item?.description, 160),
-      }))
-      .filter((item) => item.title)
-      .forEach((item) => list.append(buildCheckItem(item, checked)));
-    customItems.forEach((item) => list.append(buildCheckItem(item, checked, true)));
-
-    article.append(head, form, list);
-    return article;
   }
 
   function updateProgress(root, checked) {
     const inputs = [...root.querySelectorAll(".item-check")];
     const total = inputs.length;
     const done = inputs.filter((input) => input.checked).length;
-    const left = Math.max(total - done, 0);
     const percent = total ? Math.round((done / total) * 100) : 0;
+    const left = Math.max(total - done, 0);
 
-    document.getElementById("progressText").textContent = `${percent}%`;
-    document.getElementById("countText").textContent = `${done} / ${total} 완료`;
-    document.getElementById("leftText").textContent = left === 0 ? "모두 완료" : `${left}개 남음`;
-    document.getElementById("progressFill").style.width = `${percent}%`;
+    const progressText = document.getElementById("progressText");
+    const countText = document.getElementById("countText");
+    const leftText = document.getElementById("leftText");
+    const progressFill = document.getElementById("progressFill");
+
+    if (progressText) progressText.textContent = `${percent}%`;
+    if (countText) countText.textContent = `${done} / ${total} 완료`;
+    if (leftText) leftText.textContent = left === 0 ? "모두 완료" : `${left}개 남음`;
+    if (progressFill) progressFill.style.width = `${percent}%`;
 
     const validIds = new Set(inputs.map((input) => input.dataset.id));
     Object.keys(checked).forEach((id) => {
@@ -187,46 +108,49 @@
     });
   }
 
-  async function initChecklist() {
-    const root = document.querySelector(CHECKLIST_SELECTOR);
+  function normalizeCustom(custom, categoryIds) {
+    const next = {};
+    categoryIds.forEach((id) => {
+      next[id] = (Array.isArray(custom[id]) ? custom[id] : [])
+        .filter((item) => item && typeof item.id === "string")
+        .map((item) => ({ id: item.id, text: text(item.text, 32) }))
+        .filter((item) => item.text);
+    });
+    return next;
+  }
+
+  function initChecklist() {
+    const root = document.querySelector("[data-checklist]");
     const branch = document.body.dataset.branch;
-    const list = document.getElementById("categoryList");
-    if (!root || !branch || !list) return;
+    if (!root || !branch) return;
 
-    const storage = {
-      checked: `gwanmuldae.v2.${branch}.checked`,
-      custom: `gwanmuldae.v2.${branch}.custom`,
-    };
-    const checked = readObject(storage.checked);
-    let custom = readObject(storage.custom);
+    const checkedKey = `gwanmuldae.v2.${branch}.checked`;
+    const customKey = `gwanmuldae.v2.${branch}.custom`;
+    const checked = readObject(checkedKey);
+    const categories = [...root.querySelectorAll(".category")];
+    const categoryIds = categories.map((category) => category.dataset.category).filter(Boolean);
+    let custom = normalizeCustom(readObject(customKey), categoryIds);
 
-    try {
-      const data = await fetchJson(`data/${branch}.json`);
-      const categories = Array.isArray(data.categories) ? data.categories : [];
-      const categoryIds = categories.map((category) => text(category.id, 40)).filter(Boolean);
-      custom = normalizeCustomItems(custom, categoryIds);
-      list.replaceChildren();
-      categories.forEach((category) => {
-        const id = text(category.id, 40);
-        list.append(buildCategory(branch, category, checked, custom[id] || []));
-      });
-      writeObject(storage.custom, custom);
-      updateProgress(root, checked);
-      writeObject(storage.checked, checked);
-    } catch {
-      list.replaceChildren(create("div", "error-card", "준비물 데이터를 불러오지 못했습니다. 로컬 서버 또는 배포 환경에서 data 폴더가 함께 있는지 확인하세요."));
-      return;
-    }
+    root.querySelectorAll(".item-check").forEach((input) => {
+      input.checked = Boolean(checked[input.dataset.id]);
+    });
 
-    function saveChecked() { writeObject(storage.checked, checked); }
-    function saveCustom() { writeObject(storage.custom, custom); }
+    categories.forEach((category) => {
+      const list = category.querySelector(".item-list");
+      const categoryId = category.dataset.category;
+      (custom[categoryId] || []).forEach((item) => list?.append(customItemNode(item, checked)));
+    });
+
+    updateProgress(root, checked);
+    writeObject(checkedKey, checked);
+    writeObject(customKey, custom);
 
     root.addEventListener("change", (event) => {
       const input = event.target.closest(".item-check");
       if (!input || !root.contains(input)) return;
       if (input.checked) checked[input.dataset.id] = true;
       else delete checked[input.dataset.id];
-      saveChecked();
+      writeObject(checkedKey, checked);
       updateProgress(root, checked);
     });
 
@@ -244,20 +168,21 @@
         if (!form) return;
         form.hidden = !form.hidden;
         if (!form.hidden) form.querySelector("input")?.focus();
+        return;
       }
 
       if (action === "delete-custom" && categoryId && itemNode) {
         const id = itemNode.dataset.id;
         custom[categoryId] = (custom[categoryId] || []).filter((item) => item.id !== id);
         delete checked[id];
-        saveCustom();
-        saveChecked();
         itemNode.remove();
+        writeObject(customKey, custom);
+        writeObject(checkedKey, checked);
         updateProgress(root, checked);
+        return;
       }
 
       if (action === "edit-custom" && itemNode && !itemNode.querySelector(".edit-form")) {
-        const currentText = text(itemNode.querySelector(".item-title")?.textContent, 32);
         const form = create("form", "edit-form");
         const input = create("input");
         input.name = "edit";
@@ -265,7 +190,7 @@
         input.maxLength = 32;
         input.autocomplete = "off";
         input.setAttribute("aria-label", "준비물 이름 수정");
-        input.value = currentText;
+        input.value = text(itemNode.querySelector(".item-title")?.textContent, 32);
         const save = create("button", "", "저장");
         const cancel = create("button", "", "취소");
         save.type = "submit";
@@ -274,6 +199,7 @@
         form.append(input, save, cancel);
         itemNode.append(form);
         input.focus();
+        return;
       }
 
       if (action === "cancel-edit") button.closest(".edit-form")?.remove();
@@ -288,109 +214,107 @@
       if (addForm) {
         const category = addForm.closest(".category");
         const categoryId = category?.dataset.category;
-        const input = addForm.querySelector('input[name="item"]');
-        const value = text(input?.value, 32);
+        const value = text(addForm.querySelector('input[name="item"]')?.value, 32);
         if (!categoryId || !value) return;
-        custom[categoryId] = [...(custom[categoryId] || []), { id: makeId(`${branch}-${categoryId}`), text: value }];
-        input.value = "";
+        const item = { id: makeId(`${branch}-${categoryId}`), text: value };
+        custom[categoryId] = [...(custom[categoryId] || []), item];
+        addForm.querySelector("input").value = "";
         addForm.hidden = true;
-        saveCustom();
-        const item = custom[categoryId][custom[categoryId].length - 1];
-        category.querySelector(".item-list")?.append(buildCheckItem(item, checked, true));
+        category.querySelector(".item-list")?.append(customItemNode(item, checked));
+        writeObject(customKey, custom);
         updateProgress(root, checked);
+        return;
       }
 
-      if (editForm) {
-        const itemNode = editForm.closest(".custom-item");
-        const categoryId = editForm.closest(".category")?.dataset.category;
-        const id = itemNode?.dataset.id;
-        const value = text(editForm.querySelector('input[name="edit"]')?.value, 32);
-        if (!categoryId || !id || !value) return;
-        const item = (custom[categoryId] || []).find((entry) => entry.id === id);
-        if (item) item.text = value;
-        saveCustom();
-        itemNode.querySelector(".item-title").textContent = value;
-        editForm.remove();
-      }
+      const itemNode = editForm.closest(".custom-item");
+      const categoryId = editForm.closest(".category")?.dataset.category;
+      const id = itemNode?.dataset.id;
+      const value = text(editForm.querySelector('input[name="edit"]')?.value, 32);
+      if (!categoryId || !id || !value) return;
+      const item = (custom[categoryId] || []).find((entry) => entry.id === id);
+      if (item) item.text = value;
+      itemNode.querySelector(".item-title").textContent = value;
+      editForm.remove();
+      writeObject(customKey, custom);
     });
   }
 
-  async function initQna() {
+  function readQnaData() {
+    const node = document.getElementById("qnaData");
+    if (!node) return null;
+    try {
+      const parsed = JSON.parse(node.textContent || "{}");
+      return isObject(parsed) && Array.isArray(parsed.items) ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function qnaCard(item) {
+    const card = create("article", "qna-card");
+    card.dataset.qnaId = text(item.id, 40);
+    card.append(create("h2", "", item.question), create("p", "", item.answer));
+    return card;
+  }
+
+  function initQna() {
     const root = document.getElementById("qnaResults");
     const input = document.getElementById("qnaSearch");
     const clear = document.getElementById("qnaClear");
     const status = document.getElementById("qnaStatus");
     const pagination = document.getElementById("qnaPagination");
-    if (!root || !input || !clear || !status || !pagination) return;
+    const data = readQnaData();
+    if (!root || !input || !clear || !status || !pagination || !data) return;
 
-    let items = [];
-    let pageSize = PAGE_SIZE_FALLBACK;
-    let page = 1;
+    const items = data.items;
+    const pageSize = Number.isInteger(data.pageSize) && data.pageSize > 0 ? data.pageSize : PAGE_SIZE_FALLBACK;
+    let page = Number(document.body.dataset.qnaPage || 1) || 1;
 
-    try {
-      const data = await fetchJson("data/qna.json");
-      items = Array.isArray(data.items) ? data.items : [];
-      pageSize = Number.isInteger(data.pageSize) && data.pageSize > 0 ? data.pageSize : PAGE_SIZE_FALLBACK;
-    } catch {
-      root.replaceChildren(create("div", "error-card", "Q&A 데이터를 불러오지 못했습니다. data/qna.json 파일을 확인하세요."));
-      return;
-    }
-
-    const getResults = () => {
+    const matches = () => {
       const query = input.value.trim().toLocaleLowerCase("ko-KR");
       if (query.length < 2) return items;
-      return items.filter((item) => `${item.question} ${item.answer}`.toLocaleLowerCase("ko-KR").includes(query));
+      return items.filter((item) => {
+        const keywords = Array.isArray(item.keywords) ? item.keywords.join(" ") : "";
+        return `${item.question} ${item.answer} ${keywords}`.toLocaleLowerCase("ko-KR").includes(query);
+      });
     };
 
     function render() {
       const query = input.value.trim();
-      const results = getResults();
+      const results = matches();
       const totalPages = Math.max(1, Math.ceil(results.length / pageSize));
-      page = Math.min(page, totalPages);
-      const start = (page - 1) * pageSize;
-      const current = results.slice(start, start + pageSize);
+      page = Math.min(Math.max(page, 1), totalPages);
+      const visible = results.slice((page - 1) * pageSize, page * pageSize);
 
       clear.hidden = query.length === 0;
       if (query.length === 1) status.textContent = "두 글자 이상 입력하면 검색됩니다.";
       else if (query.length >= 2) status.textContent = results.length ? `검색 결과 ${results.length}개` : "검색 결과가 없습니다.";
       else status.textContent = `총 ${items.length}개 질문`;
 
-      root.replaceChildren();
-      if (!current.length) {
-        root.append(create("div", "empty-card", "일치하는 질문이 없습니다. 검색어를 바꿔 다시 시도해보세요."));
-      } else {
-        current.forEach((item) => {
-          const card = create("article", "qna-card");
-          card.append(create("h2", "", item.question), create("p", "", item.answer));
-          root.append(card);
-        });
-      }
+      root.replaceChildren(...(visible.length ? visible.map(qnaCard) : [create("div", "empty-card", "일치하는 질문이 없습니다. 검색어를 바꿔 다시 시도해보세요.")]));
 
       pagination.replaceChildren();
       if (results.length <= pageSize) return;
 
-      const prev = create("button", "page-button", "‹");
-      prev.type = "button";
-      prev.disabled = page === 1;
-      prev.setAttribute("aria-label", "이전 페이지");
-      prev.addEventListener("click", () => { page -= 1; render(); });
-      pagination.append(prev);
-
-      for (let index = 1; index <= totalPages; index += 1) {
-        const button = create("button", `page-button${index === page ? " is-current" : ""}`, String(index));
+      const makeButton = (label, nextPage, aria, disabled = false) => {
+        const button = create("button", "page-button", label);
         button.type = "button";
-        button.setAttribute("aria-label", `${index}페이지`);
-        if (index === page) button.setAttribute("aria-current", "page");
-        button.addEventListener("click", () => { page = index; render(); });
+        button.disabled = disabled;
+        button.setAttribute("aria-label", aria);
+        button.addEventListener("click", () => { page = nextPage; render(); });
+        return button;
+      };
+
+      pagination.append(makeButton("‹", page - 1, "이전 페이지", page === 1));
+      for (let index = 1; index <= totalPages; index += 1) {
+        const button = makeButton(String(index), index, `${index}페이지`);
+        if (index === page) {
+          button.classList.add("is-current");
+          button.setAttribute("aria-current", "page");
+        }
         pagination.append(button);
       }
-
-      const next = create("button", "page-button", "›");
-      next.type = "button";
-      next.disabled = page === totalPages;
-      next.setAttribute("aria-label", "다음 페이지");
-      next.addEventListener("click", () => { page += 1; render(); });
-      pagination.append(next);
+      pagination.append(makeButton("›", page + 1, "다음 페이지", page === totalPages));
     }
 
     input.addEventListener("input", () => { page = 1; render(); });

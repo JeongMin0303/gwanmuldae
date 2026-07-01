@@ -239,9 +239,9 @@ svg { display: block; }
 .qna-card p { margin: 14px 0 0; color: var(--color-muted); font-size: 0.96rem; font-weight: 500; line-height: 1.72; word-break: keep-all; }
 .qna-pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 18px; }
 .qna-pagination:empty { display: none; }
-.page-button { min-width: 40px; height: 40px; border: 1px solid var(--color-line); border-radius: 50%; background: rgb(255 255 255 / 0.76); color: var(--color-muted); font-weight: 800; }
+.page-button { min-width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-line); border-radius: 50%; background: rgb(255 255 255 / 0.76); color: var(--color-muted); font-weight: 800; }
 .page-button:hover, .page-button.is-current { color: #fff; border-color: var(--color-navy); background: var(--color-navy); }
-.page-button[disabled] { cursor: not-allowed; opacity: 0.45; }
+.page-button[disabled], .page-button.is-disabled { cursor: not-allowed; opacity: 0.45; }
 
 .site-footer { flex: 0 0 auto; padding: 34px 0 30px; color: var(--color-muted); }
 .footer-inner { display: grid; gap: 6px; padding-top: 24px; border-top: 1px solid var(--color-line); text-align: left; font-size: 0.92rem; font-weight: 500; line-height: 1.6; }
