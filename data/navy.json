@@ -1,0 +1,137 @@
+{
+  "label": "해군",
+  "title": "해군 입대 준비물",
+  "desc": "해군 교육사령부 기초군사교육단 입영 전 필요한 기본 항목을 정리했습니다.",
+  "list": "해군 준비물 목록",
+  "branch": "navy",
+  "categories": [
+    {
+      "id": "required",
+      "title": "필수 서류·카드",
+      "description": "입영 당일 가장 먼저 확인해야 하는 기본 항목입니다.",
+      "items": [
+        {
+          "id": "navy-required-notice",
+          "title": "입영통지서",
+          "description": "모바일 또는 출력본 인정 여부는 본인 안내문을 확인하세요."
+        },
+        {
+          "id": "navy-required-id-card",
+          "title": "신분증",
+          "description": "주민등록증, 운전면허증 등 사진이 있는 신분증을 준비하세요."
+        },
+        {
+          "id": "navy-required-nara-card",
+          "title": "나라사랑카드",
+          "description": "카드 사용 가능 여부와 연결 계좌 잔액을 미리 확인하세요."
+        },
+        {
+          "id": "navy-required-phone-charger",
+          "title": "휴대전화와 일체형 충전기",
+          "description": "휴대전화 사용을 희망한다면 일체형 충전기 기준을 확인하세요."
+        },
+        {
+          "id": "navy-required-navy-guide",
+          "title": "해군 입영 안내문",
+          "description": "입영 장소와 지참 가능 물품을 확인하세요."
+        }
+      ]
+    },
+    {
+      "id": "personal",
+      "title": "개인 상황별",
+      "description": "본인에게 해당되는 항목만 챙기면 됩니다.",
+      "items": [
+        {
+          "id": "navy-personal-medicine",
+          "title": "복용 중인 약과 처방전",
+          "description": "정기 복용 약은 처방전과 함께 준비하는 것이 안전합니다."
+        },
+        {
+          "id": "navy-personal-glasses",
+          "title": "안경과 안경집",
+          "description": "시력 보정이 필요하다면 렌즈보다 안경을 우선 준비하세요."
+        },
+        {
+          "id": "navy-personal-license",
+          "title": "자격증·면허증",
+          "description": "특기 분류나 안내문에서 요구하는 경우 준비하세요."
+        },
+        {
+          "id": "navy-personal-contact-note",
+          "title": "보호자 연락처 메모",
+          "description": "휴대전화 사용이 제한될 때를 대비해 종이에 적어두세요."
+        }
+      ]
+    },
+    {
+      "id": "daily",
+      "title": "생활·위생",
+      "description": "작고 단순한 제품 위주로 준비하세요.",
+      "items": [
+        {
+          "id": "navy-daily-toothbrush",
+          "title": "칫솔과 치약",
+          "description": "부피가 작고 관리하기 쉬운 제품이 좋습니다."
+        },
+        {
+          "id": "navy-daily-cleanser",
+          "title": "세안제",
+          "description": "유리 용기보다 튜브형 또는 플라스틱 용기가 안전합니다."
+        },
+        {
+          "id": "navy-daily-lotion",
+          "title": "로션·립밤",
+          "description": "건조함에 대비하되 향이 강한 제품은 피하세요."
+        },
+        {
+          "id": "navy-daily-zipbag",
+          "title": "지퍼백",
+          "description": "서류, 약, 작은 물건을 나눠 담기 좋습니다."
+        },
+        {
+          "id": "navy-daily-watch",
+          "title": "손목시계",
+          "description": "저렴하고 튼튼한 전자시계를 권장합니다."
+        },
+        {
+          "id": "navy-daily-navy-waterproof-bag",
+          "title": "작은 방수 지퍼백",
+          "description": "젖으면 곤란한 물건을 분리 보관하세요."
+        }
+      ]
+    },
+    {
+      "id": "training",
+      "title": "훈련 도움",
+      "description": "발과 피부 보호처럼 초반 적응에 도움이 되는 항목입니다.",
+      "items": [
+        {
+          "id": "navy-training-insoles",
+          "title": "군화용 깔창",
+          "description": "발 사이즈에 맞춰 미리 준비하면 편합니다."
+        },
+        {
+          "id": "navy-training-blister-pad",
+          "title": "물집 방지 패드",
+          "description": "장시간 보행과 훈련에 대비하세요."
+        },
+        {
+          "id": "navy-training-extra-socks",
+          "title": "여분 양말",
+          "description": "젖거나 땀이 많이 났을 때를 대비하세요."
+        },
+        {
+          "id": "navy-training-small-note",
+          "title": "작은 수첩과 볼펜",
+          "description": "주소, 계좌, 메모를 적어두기 좋습니다."
+        },
+        {
+          "id": "navy-training-navy-foot-care",
+          "title": "발 관리 용품",
+          "description": "오래 걷거나 젖은 뒤 물집에 대비하세요."
+        }
+      ]
+    }
+  ]
+}
