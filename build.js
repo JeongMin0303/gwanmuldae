@@ -60,8 +60,6 @@ function readSiteConfig() {
       enabled: true,
       message: "관물대는 입대 준비 정보를 계속 업데이트하고 있습니다.",
       lastUpdated: "2026.07.02",
-      linkText: "최근 변경 내용 보기",
-      href: "qna.html",
     },
   };
 
@@ -94,7 +92,7 @@ function safeJson(value) {
 }
 
 function brand() {
-  return `<a class="brand" href="index.html" aria-label="관물대 홈으로 이동"><span class="brand-mark" aria-hidden="true"><svg focusable="false" viewBox="0 0 48 48" aria-hidden="true"><rect class="brand-locker-outline" x="8" y="8" width="32" height="32" rx="12"></rect><rect class="brand-locker-door" x="14" y="15" width="20" height="18" rx="5"></rect><path class="brand-locker-line" d="M19 21h10M19 27h10"></path><path class="brand-locker-accent" d="M31.5 20.5v7"></path></svg></span><span class="brand-word">관물대</span></a>`;
+  return `<a class="brand" href="index.html" aria-label="관물대 홈으로 이동"><span class="brand-mark" aria-hidden="true"><img src="favicon.svg" alt="" /></span><span class="brand-word">관물대</span></a>`;
 }
 
 function nav(current = "") {
@@ -112,13 +110,9 @@ function updateNotice() {
 
   const message = escapeHtml(notice.message || "관물대는 입대 준비 정보를 계속 업데이트하고 있습니다.");
   const lastUpdated = escapeHtml(notice.lastUpdated || LASTMOD.replace(/-/g, "."));
-  const href = escapeHtml(notice.href || "qna.html");
-  const linkText = escapeHtml(notice.linkText || "최근 변경 내용 보기");
-
   return `<aside class="update-notice container" aria-label="사이트 업데이트 안내">
       <div class="update-notice-inner">
         <p><span class="update-dot" aria-hidden="true"></span><span>${message}</span> <span class="update-date">최근 업데이트: <time datetime="${isoDate(notice.lastUpdated)}">${lastUpdated}</time></span></p>
-        <a class="update-link" href="${href}">${linkText}<span aria-hidden="true">→</span></a>
       </div>
     </aside>`;
 }
@@ -152,6 +146,7 @@ function head({ title, description, file, type = "website", jsonLd }) {
     <meta name="theme-color" content="#071322" />
     <meta name="date" content="${LASTMOD}" />
     <link rel="canonical" href="${canonical}" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="${type}" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:site_name" content="관물대" />
