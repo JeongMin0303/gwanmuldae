@@ -92,7 +92,7 @@ svg { display: block; }
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: inherit;
 }
 .brand-word { font-size: 1.28rem; font-weight: 800; letter-spacing: -0.032em; }

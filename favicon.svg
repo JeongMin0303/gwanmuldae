@@ -1,36 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Gwanmuldae final Hangul initials logo preview">
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Gwanmuldae crisp Hangul initials logo">
   <defs>
     <linearGradient id="bg" x1="132" y1="82" x2="878" y2="930" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#0f3a58"/>
-      <stop offset="0.5" stop-color="#030b16"/>
+      <stop offset="0.48" stop-color="#04101d"/>
       <stop offset="1" stop-color="#063142"/>
     </linearGradient>
-    <linearGradient id="ivory" x1="260" y1="260" x2="770" y2="770" gradientUnits="userSpaceOnUse">
+    <linearGradient id="ivory" x1="284" y1="294" x2="760" y2="690" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.52" stop-color="#eef4f2"/>
-      <stop offset="1" stop-color="#c9d8d7"/>
+      <stop offset="1" stop-color="#dce8e5"/>
     </linearGradient>
-    <linearGradient id="gold" x1="326" y1="322" x2="700" y2="712" gradientUnits="userSpaceOnUse">
+    <linearGradient id="gold" x1="374" y1="486" x2="628" y2="674" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#fff0b8"/>
-      <stop offset="0.54" stop-color="#d4a13d"/>
-      <stop offset="1" stop-color="#a97418"/>
+      <stop offset="0.55" stop-color="#d5a13d"/>
+      <stop offset="1" stop-color="#ac781f"/>
     </linearGradient>
-    <filter id="shadow" x="-24%" y="-24%" width="148%" height="152%">
-      <feDropShadow dx="0" dy="34" stdDeviation="30" flood-color="#00050a" flood-opacity="0.42"/>
-    </filter>
   </defs>
 
   <rect width="1024" height="1024" rx="238" fill="url(#bg)"/>
-  <path d="M178 258C280 140 444 104 574 160" fill="none" stroke="#ffffff" stroke-opacity="0.09" stroke-width="28" stroke-linecap="round"/>
-  <path d="M848 762C746 880 580 916 450 860" fill="none" stroke="#ffffff" stroke-opacity="0.075" stroke-width="28" stroke-linecap="round"/>
 
-  <g filter="url(#shadow)" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M284 334H450V448" fill="none" stroke="url(#ivory)" stroke-width="76"/>
+  <g>
+    <rect x="284" y="296" width="204" height="76" rx="32" fill="url(#ivory)"/>
+    <rect x="412" y="334" width="76" height="152" rx="32" fill="url(#ivory)"/>
 
-    <rect x="374" y="486" width="254" height="188" rx="34" fill="none" stroke="url(#gold)" stroke-width="72"/>
+    <rect x="374" y="486" width="254" height="72" rx="30" fill="url(#gold)"/>
+    <rect x="374" y="486" width="72" height="188" rx="30" fill="url(#gold)"/>
+    <rect x="556" y="486" width="72" height="188" rx="30" fill="url(#gold)"/>
+    <rect x="374" y="602" width="254" height="72" rx="30" fill="url(#gold)"/>
 
-    <path d="M654 374H760" fill="none" stroke="url(#ivory)" stroke-width="74"/>
-    <path d="M654 374V648" fill="none" stroke="url(#ivory)" stroke-width="74"/>
-    <path d="M654 648H760" fill="none" stroke="url(#ivory)" stroke-width="74"/>
+    <rect x="654" y="337" width="106" height="74" rx="31" fill="url(#ivory)"/>
+    <rect x="654" y="374" width="74" height="274" rx="31" fill="url(#ivory)"/>
+    <rect x="654" y="611" width="106" height="74" rx="31" fill="url(#ivory)"/>
   </g>
 </svg>
