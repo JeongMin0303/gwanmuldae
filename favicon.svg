@@ -1,25 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Strong favicon style Gwanmuldae app logo preview">
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Gwanmuldae final Hangul initials logo preview">
   <defs>
     <linearGradient id="bg" x1="132" y1="82" x2="878" y2="930" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#0f3a58"/>
       <stop offset="0.5" stop-color="#030b16"/>
       <stop offset="1" stop-color="#063142"/>
     </linearGradient>
-    <linearGradient id="body" x1="316" y1="194" x2="712" y2="834" gradientUnits="userSpaceOnUse">
+    <linearGradient id="ivory" x1="260" y1="260" x2="770" y2="770" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.48" stop-color="#f0f5f2"/>
-      <stop offset="1" stop-color="#cfdcdb"/>
+      <stop offset="0.52" stop-color="#eef4f2"/>
+      <stop offset="1" stop-color="#c9d8d7"/>
     </linearGradient>
-    <linearGradient id="inner" x1="370" y1="260" x2="654" y2="768" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#071322" stop-opacity="0.035"/>
-      <stop offset="1" stop-color="#071322" stop-opacity="0.18"/>
+    <linearGradient id="gold" x1="326" y1="322" x2="700" y2="712" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff0b8"/>
+      <stop offset="0.54" stop-color="#d4a13d"/>
+      <stop offset="1" stop-color="#a97418"/>
     </linearGradient>
-    <linearGradient id="gold" x1="390" y1="376" x2="638" y2="430" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#ffe49a"/>
-      <stop offset="1" stop-color="#c99a32"/>
-    </linearGradient>
-    <filter id="shadow" x="-22%" y="-20%" width="144%" height="148%">
-      <feDropShadow dx="0" dy="40" stdDeviation="38" flood-color="#00050a" flood-opacity="0.46"/>
+    <filter id="shadow" x="-24%" y="-24%" width="148%" height="152%">
+      <feDropShadow dx="0" dy="34" stdDeviation="30" flood-color="#00050a" flood-opacity="0.42"/>
     </filter>
   </defs>
 
@@ -27,19 +24,13 @@
   <path d="M178 258C280 140 444 104 574 160" fill="none" stroke="#ffffff" stroke-opacity="0.09" stroke-width="28" stroke-linecap="round"/>
   <path d="M848 762C746 880 580 916 450 860" fill="none" stroke="#ffffff" stroke-opacity="0.075" stroke-width="28" stroke-linecap="round"/>
 
-  <g filter="url(#shadow)">
-    <rect x="302" y="184" width="420" height="656" rx="126" fill="url(#body)"/>
-    <rect x="350" y="246" width="324" height="532" rx="86" fill="url(#inner)" stroke="#ffffff" stroke-opacity="0.38" stroke-width="4"/>
+  <g filter="url(#shadow)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M284 334H450V448" fill="none" stroke="url(#ivory)" stroke-width="76"/>
 
-    <path d="M512 286V754" stroke="#071322" stroke-opacity="0.14" stroke-width="18" stroke-linecap="round"/>
+    <rect x="374" y="486" width="254" height="188" rx="34" fill="none" stroke="url(#gold)" stroke-width="72"/>
 
-    <rect x="404" y="396" width="70" height="34" rx="17" fill="url(#gold)"/>
-    <rect x="550" y="396" width="70" height="34" rx="17" fill="url(#gold)"/>
-
-    <circle cx="512" cy="548" r="18" fill="#071322" opacity="0.34"/>
-    <path d="M512 580V612" stroke="#071322" stroke-opacity="0.28" stroke-width="18" stroke-linecap="round"/>
-
-    <path d="M426 670C468 714 556 714 598 670" fill="none" stroke="#071322" stroke-opacity="0.38" stroke-width="28" stroke-linecap="round"/>
-    <path d="M448 668C486 692 538 692 576 668" fill="none" stroke="#d8bb70" stroke-opacity="0.82" stroke-width="12" stroke-linecap="round"/>
+    <path d="M654 374H760" fill="none" stroke="url(#ivory)" stroke-width="74"/>
+    <path d="M654 374V648" fill="none" stroke="url(#ivory)" stroke-width="74"/>
+    <path d="M654 648H760" fill="none" stroke="url(#ivory)" stroke-width="74"/>
   </g>
 </svg>
