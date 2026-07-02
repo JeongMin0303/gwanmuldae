@@ -7,7 +7,6 @@ const path = require("path");
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, "data");
 const SITE_URL = "https://gwanmuldae.kr";
-const LASTMOD = "2026-07-02";
 const BRANCHES = [
   {
     key: "army",
@@ -54,6 +53,33 @@ function writeFile(name, content) {
   fs.writeFileSync(path.join(ROOT, name), content.trimStart() + "\n", "utf8");
 }
 
+function readSiteConfig() {
+  const fallback = {
+    site: { name: "관물대", url: SITE_URL, lastModified: "2026-07-02" },
+    notice: {
+      enabled: true,
+      message: "관물대는 입대 준비 정보를 계속 업데이트하고 있습니다.",
+      lastUpdated: "2026.07.02",
+      linkText: "최근 변경 내용 보기",
+      href: "qna.html",
+    },
+  };
+
+  try {
+    return { ...fallback, ...readJson("site.json") };
+  } catch {
+    return fallback;
+  }
+}
+
+const SITE_CONFIG = readSiteConfig();
+const LASTMOD = SITE_CONFIG.site?.lastModified || "2026-07-02";
+
+function isoDate(value = LASTMOD) {
+  const normalized = String(value || "").replace(/\./g, "-");
+  return /^\d{4}-\d{2}-\d{2}$/.test(normalized) ? normalized : LASTMOD;
+}
+
 function escapeHtml(value = "") {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -80,6 +106,33 @@ function header(current = "", includeNav = true) {
   return `<header class="site-header"><div class="container header-inner">${brand()}${includeNav ? nav(current) : ""}</div></header>`;
 }
 
+function updateNotice() {
+  const notice = SITE_CONFIG.notice || {};
+  if (!notice.enabled) return "";
+
+  const message = escapeHtml(notice.message || "관물대는 입대 준비 정보를 계속 업데이트하고 있습니다.");
+  const lastUpdated = escapeHtml(notice.lastUpdated || LASTMOD.replace(/-/g, "."));
+  const href = escapeHtml(notice.href || "qna.html");
+  const linkText = escapeHtml(notice.linkText || "최근 변경 내용 보기");
+
+  return `<aside class="update-notice container" aria-label="사이트 업데이트 안내">
+      <div class="update-notice-inner">
+        <p><span class="update-dot" aria-hidden="true"></span><span>${message}</span> <span class="update-date">최근 업데이트: <time datetime="${isoDate(notice.lastUpdated)}">${lastUpdated}</time></span></p>
+        <a class="update-link" href="${href}">${linkText}<span aria-hidden="true">→</span></a>
+      </div>
+    </aside>`;
+}
+
+function analyticsSnippet() {
+  return `<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+    <script defer src="/_vercel/insights/script.js"></script>`;
+}
+
+function bodyScripts() {
+  return `${analyticsSnippet()}
+    <script src="script.js" defer></script>`;
+}
+
 function footer() {
   return `<footer class="site-footer"><div class="container footer-inner"><p>관물대가 당신의 첫걸음을 응원합니다.</p><p>문의사항: <a href="mailto:hakires03@gmail.com">hakires03@gmail.com</a></p><p>Copyright © 2026 관물대. All Rights Reserved.</p></div></footer>`;
 }
@@ -97,6 +150,7 @@ function head({ title, description, file, type = "website", jsonLd }) {
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <meta name="theme-color" content="#071322" />
+    <meta name="date" content="${LASTMOD}" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="${type}" />
     <meta property="og:locale" content="ko_KR" />
@@ -150,6 +204,7 @@ function itemListSchema(data, branch) {
     description: branch.meta,
     url: urlFor(branch.file),
     inLanguage: "ko-KR",
+    dateModified: LASTMOD,
     breadcrumb: breadcrumbSchema([
       { name: "관물대", file: "index.html" },
       { name: `${branch.label} 입대 준비물`, file: branch.file },
@@ -220,10 +275,12 @@ function buildIndex() {
       url: urlFor("index.html"),
       description: "육군, 해군, 해병대, 공군 입대 준비물 체크리스트",
       inLanguage: "ko-KR",
+      dateModified: LASTMOD,
     },
   })}
   <body class="home-page" data-page="home">
     ${header("", false)}
+    ${updateNotice()}
     <main class="container home-shell">
       <section class="home-hero" aria-labelledby="home-title">
         <p class="eyebrow">ENLISTMENT CHECKLIST</p>
@@ -242,7 +299,7 @@ function buildIndex() {
       </section>
     </main>
     ${footer()}
-    <script src="script.js" defer></script>
+    ${bodyScripts()}
   </body>
 </html>`;
   writeFile("index.html", html);
@@ -258,6 +315,7 @@ function buildBranch(branch) {
   ${head({ title, description: branch.meta, file: branch.file, jsonLd: itemListSchema(data, branch) })}
   <body class="${branch.className}" data-page="checklist" data-branch="${branch.key}">
     ${header(branch.key)}
+    ${updateNotice()}
     <main class="container page-shell">
       <section class="branch-hero" aria-labelledby="page-title">
         <div class="hero-copy">
@@ -293,7 +351,7 @@ function buildBranch(branch) {
       </section>
     </main>
     ${footer()}
-    <script src="script.js" defer></script>
+    ${bodyScripts()}
   </body>
 </html>`;
   writeFile(branch.file, html);
@@ -307,6 +365,7 @@ function qnaSchema(data, pageItems, file) {
     description: data.description,
     url: urlFor(file),
     inLanguage: "ko-KR",
+    dateModified: LASTMOD,
     breadcrumb: breadcrumbSchema([
       { name: "관물대", file: "index.html" },
       { name: "입대 전 Q&A", file },
@@ -358,6 +417,7 @@ function buildQnaPages() {
   ${head({ title, description, file, jsonLd: qnaSchema(data, pageItems, file) })}
   <body data-page="qna" data-qna-page="${page}">
     ${header("qna")}
+    ${updateNotice()}
     <main class="container qna-shell">
       <section class="qna-hero" aria-labelledby="qna-title">
         <div class="qna-hero-icon"><span class="qna-icon" data-icon="qna" aria-hidden="true"></span></div>
@@ -384,7 +444,7 @@ function buildQnaPages() {
       <script type="application/json" id="qnaData">${safeJson({ ...data, items })}</script>
     </main>
     ${footer()}
-    <script src="script.js" defer></script>
+    ${bodyScripts()}
   </body>
 </html>`;
     writeFile(file, html);
