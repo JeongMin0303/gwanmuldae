@@ -33,23 +33,23 @@
   "categories": [
     {
       "id": "required",
-      "title": "필수 서류·카드",
-      "description": "입영 당일 본인 확인과 기본 절차에 필요한 항목입니다.",
+      "title": "필수 준비물",
+      "description": "입영 당일 반드시 확인해야 할 서류와 기본 준비물입니다.",
       "items": [
         {
           "id": "airforce-required-notice",
           "title": "입영통지서",
-          "description": "모바일 또는 출력본 인정 여부는 본인 입영 안내문을 확인하세요."
+          "description": "입영 통지서는 원칙적으로 지참 대상이지만, 실제 현장에서는 확인하지 않았다는 후기도 많습니다."
         },
         {
           "id": "airforce-required-id-card",
           "title": "신분증",
-          "description": "주민등록증, 운전면허증 등 사진이 있는 신분증을 준비하세요."
+          "description": "주민등록증, 운전면허증 등 사진이 있는 실물 신분증을 준비하세요."
         },
         {
           "id": "airforce-required-nara-card",
           "title": "나라사랑카드",
-          "description": "급여와 본인 확인에 사용할 수 있으니 카드 상태와 연결 계좌를 확인하세요."
+          "description": "카드 상태와 연결 계좌를 미리 확인하세요. 장병내일준비적금 납입을 계획하고 있다면, 월 최대 한도인 55만 원에 맞춰 사용할 계좌 잔액도 준비해두면 편합니다."
         },
         {
           "id": "airforce-required-certificate-original",
@@ -58,35 +58,30 @@
         },
         {
           "id": "airforce-required-phone-charger",
-          "title": "휴대전화와 충전기",
-          "description": "USB 분리형 또는 일체형 충전기 지참 가능 여부를 본인 안내문 기준으로 확인하세요."
-        },
-        {
-          "id": "airforce-required-airforce-guide",
-          "title": "공군 입영 안내문",
-          "description": "기본군사훈련단 입영 절차와 세부 지참 기준을 확인하세요."
+          "title": "충전기",
+          "description": "USB 분리형 또는 일체형 충전기 모두 지참 가능합니다."
         }
       ]
     },
     {
       "id": "personal",
-      "title": "개인 상황별",
-      "description": "본인에게 해당되는 항목만 준비하세요.",
+      "title": "해당자 준비물",
+      "description": "본인 상황에 해당되는 항목만 확인해 준비하세요.",
       "items": [
         {
           "id": "airforce-personal-prescription-medicine",
           "title": "전문 의약품",
-          "description": "진단서, 소견서, 처방전 중 1종을 함께 지참하면 반입 가능 여부 확인에 도움이 됩니다."
+          "description": "진단서, 소견서, 처방전 중 1종을 함께 지참하는 것이 원칙입니다."
         },
         {
           "id": "airforce-personal-general-medicine",
           "title": "일반 의약품",
-          "description": "해열진통제, 감기약, 소화제, 붙이는 파스, 연고류 등은 각 포장 단위 1개까지 준비하세요."
+          "description": "해열진통제, 감기약, 소화제, 붙이는 파스, 연고류 등 각 포장 단위 1개까지 가능합니다."
         },
         {
           "id": "airforce-personal-medicine-package",
           "title": "의약품 포장 상태 확인",
-          "description": "포장 상태가 뜯어진 의약품은 반입이 어려울 수 있습니다. 비타민과 건강보조식품은 제외하세요."
+          "description": "포장 상태가 뜯어진 의약품은 반입이 어렵습니다."
         },
         {
           "id": "airforce-personal-glasses",
@@ -95,8 +90,13 @@
         },
         {
           "id": "airforce-personal-lenses",
-          "title": "렌즈와 인공눈물",
-          "description": "렌즈는 1회용 투명렌즈 위주로 준비하고, 인공눈물이 필요하면 함께 챙기세요."
+          "title": "렌즈",
+          "description": "렌즈를 착용한다면 1회용 투명렌즈 위주로 준비하세요. 안경 착용자는 사격 등 일부 훈련에서 렌즈가 더 편할 수 있습니다."
+        },
+        {
+          "id": "airforce-personal-eye-drops",
+          "title": "인공눈물",
+          "description": "렌즈 착용이나 안구 건조가 걱정된다면 인공눈물도 함께 챙기세요."
         },
         {
           "id": "airforce-personal-orthodontic",
@@ -106,29 +106,24 @@
         {
           "id": "airforce-personal-photo",
           "title": "사진",
-          "description": "개인 사진은 가능하지만 군 기강에 저해되는 사진은 반입이 어려울 수 있습니다."
-        },
-        {
-          "id": "airforce-personal-contact-note",
-          "title": "보호자 연락처 메모",
-          "description": "휴대전화 사용이 제한될 때를 대비해 종이에 적어두면 좋습니다."
+          "description": "군 기강에 저해되는 사진은 반입이 어려울 수 있습니다."
         }
       ]
     },
     {
       "id": "daily",
-      "title": "생활·위생",
+      "title": "생활",
       "description": "보급 전까지 사용할 개인 생활용품과 위생용품입니다.",
       "items": [
         {
           "id": "airforce-daily-running-shoes",
           "title": "운동화",
-          "description": "보급품 지급 전까지 사용할 수 있는 운동화를 준비하세요."
+          "description": "보급품 지급 전까지 사용합니다."
         },
         {
           "id": "airforce-daily-towels",
           "title": "개인 수건",
-          "description": "개인 수건은 3장 내외로 준비하세요."
+          "description": "보급품 지급 전까지 사용합니다."
         },
         {
           "id": "airforce-daily-white-kf94-mask",
@@ -138,12 +133,12 @@
         {
           "id": "airforce-daily-extra-clothes",
           "title": "개인 여벌옷",
-          "description": "보급품 지급 전까지 착용할 내의, 양말 등 7일치 내외를 준비하세요."
+          "description": "보급품 지급 전까지 착용할 내의, 양말 등 3~4일치를 준비하세요."
         },
         {
           "id": "airforce-daily-book",
           "title": "책",
-          "description": "책은 3권 이내로 준비하세요. 종교서적과 소설도 허용될 수 있습니다."
+          "description": "입영 초기 대기 시간이 길게 느껴질 수 있으니, 읽을 책을 3권 이내로 준비해두면 좋습니다."
         },
         {
           "id": "airforce-daily-cup-tumbler",
@@ -151,29 +146,9 @@
           "description": "유리 재질은 피하고, 휴대 가능한 작은 사이즈를 준비하세요."
         },
         {
-          "id": "airforce-daily-tumbler-cleaner",
-          "title": "텀블러 세정제",
-          "description": "코인형 텀블러 세정제는 10회분 내외로 준비할 수 있습니다."
-        },
-        {
           "id": "airforce-daily-stationery",
-          "title": "필기구",
-          "description": "볼펜, 컴퓨터용 사인펜, 수정테이프, 네임펜, 유성매직 등을 준비하세요."
-        },
-        {
-          "id": "airforce-daily-cap",
-          "title": "개인 모자",
-          "description": "필요한 경우 개인 모자를 준비하세요."
-        },
-        {
-          "id": "airforce-daily-ear-protection",
-          "title": "마스크 귀 보호대",
-          "description": "마스크 착용으로 귀가 불편할 때 사용할 수 있습니다."
-        },
-        {
-          "id": "airforce-daily-lip-balm",
-          "title": "립밤",
-          "description": "건조함에 대비해 작은 제품으로 준비하세요."
+          "title": "노트 및 필기구",
+          "description": "학과 공부에 필요한 노트, 볼펜, 컴퓨터용 사인펜 등을 준비하세요."
         },
         {
           "id": "airforce-daily-earplugs",
@@ -187,18 +162,18 @@
         },
         {
           "id": "airforce-daily-stamp",
-          "title": "우표",
+          "title": "편지지 및 우표",
           "description": "편지를 보낼 계획이 있다면 소량 준비하세요."
         },
         {
           "id": "airforce-daily-skin-care",
-          "title": "스킨·로션·선크림",
-          "description": "튜브형 또는 플라스틱 용기에 담긴 제품으로 준비하세요. 가스 충전식, 스프레이형, 유리 재질은 피하세요."
+          "title": "스킨·로션·선크림·립밤",
+          "description": "튜브형 또는 플라스틱 용기에 담긴 제품으로 준비하세요. 가스 충전식, 스프레이형, 유리 재질은 금지입니다."
         },
         {
           "id": "airforce-daily-shampoo-bodywash",
-          "title": "샴푸·바디워시",
-          "description": "부피가 크지 않은 제품으로 준비하세요."
+          "title": "샴푸·바디워시·폼클렌징",
+          "description": "올인원 제품으로 준비하는 것도 편합니다."
         },
         {
           "id": "airforce-daily-shower-towel",
@@ -207,28 +182,23 @@
         },
         {
           "id": "airforce-daily-toothbrush",
-          "title": "칫솔과 치약",
-          "description": "전동칫솔을 준비하는 경우 충전기도 함께 챙기세요."
+          "title": "칫솔·치약",
+          "description": "여분 칫솔을 준비하는 것도 좋습니다."
         },
         {
           "id": "airforce-daily-razor",
           "title": "면도기",
-          "description": "전기면도기를 준비하는 경우 충전기도 함께 챙기세요."
+          "description": "수동 면도기는 보급품으로 지급됩니다."
         },
         {
           "id": "airforce-daily-power-bank",
           "title": "보조배터리",
-          "description": "휴대전화 사용과 이동 상황에 대비해 준비할 수 있습니다."
+          "description": "충전기 사용이 어려울 수 있으니 챙기는 것을 추천합니다."
         },
         {
           "id": "airforce-daily-earphones",
           "title": "유·무선 이어폰",
-          "description": "휴대전화 사용 가능 기준에 맞춰 준비하세요."
-        },
-        {
-          "id": "airforce-daily-zipbag",
-          "title": "지퍼백",
-          "description": "서류, 약, 작은 물건을 나눠 담기 좋습니다."
+          "description": "에어팟도 반입 가능합니다."
         }
       ]
     },
