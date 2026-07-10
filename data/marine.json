@@ -4,6 +4,11 @@
   "desc": "해병대 교육훈련단 입영 전 챙길 기본 서류와 개인 준비물을 정리했습니다.",
   "list": "해병대 준비물 목록",
   "branch": "marine",
+  "restricted": {
+    "title": "반입 금지·주의 물품",
+    "description": "해병대 입영 안내문에 금지 또는 제한으로 표시된 물품을 정리하세요.",
+    "items": []
+  },
   "categories": [
     {
       "id": "required",

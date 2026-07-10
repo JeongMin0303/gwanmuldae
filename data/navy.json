@@ -4,6 +4,11 @@
   "desc": "해군 교육사령부 기초군사교육단 입영 전 필요한 기본 항목을 정리했습니다.",
   "list": "해군 준비물 목록",
   "branch": "navy",
+  "restricted": {
+    "title": "반입 금지·주의 물품",
+    "description": "해군 입영 안내문에 금지 또는 제한으로 표시된 물품을 정리하세요.",
+    "items": []
+  },
   "categories": [
     {
       "id": "required",

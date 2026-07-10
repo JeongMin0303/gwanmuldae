@@ -4,6 +4,11 @@
   "desc": "육군 신병교육대 입영 전 기본 서류, 개인 상황별 준비물, 훈련 도움 물품을 정리했습니다.",
   "list": "육군 준비물 목록",
   "branch": "army",
+  "restricted": {
+    "title": "반입 금지·주의 물품",
+    "description": "육군 입영 안내문에 금지 또는 제한으로 표시된 물품을 정리하세요.",
+    "items": []
+  },
   "categories": [
     {
       "id": "required",

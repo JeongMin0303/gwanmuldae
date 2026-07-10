@@ -220,6 +220,36 @@ function itemListSchema(data, branch) {
   };
 }
 
+function restrictedItems(data) {
+  return Array.isArray(data.restricted?.items) ? data.restricted.items : [];
+}
+
+function restrictedSectionHtml(data) {
+  const restricted = data.restricted || {};
+  const items = restrictedItems(data);
+  if (!items.length) return "";
+
+  const title = escapeHtml(restricted.title || "반입 금지·주의 물품");
+  const description = escapeHtml(restricted.description || "각 군 입영 안내문 기준을 우선 확인하세요.");
+  const itemsHtml = items.map((item) => `<li class="restricted-item" data-id="${escapeHtml(item.id || "")}">
+    <span class="restricted-mark" aria-hidden="true">!</span>
+    <span class="restricted-copy"><strong>${escapeHtml(item.title)}</strong><em>${escapeHtml(item.description)}</em></span>
+  </li>`).join("\n");
+
+  return `<section class="restricted-panel" aria-labelledby="restricted-title">
+        <div class="restricted-head">
+          <div>
+            <p class="tiny-label">NOTICE</p>
+            <h2 id="restricted-title">${title}</h2>
+          </div>
+          <p>${description}</p>
+        </div>
+        <ul class="restricted-list">
+          ${itemsHtml}
+        </ul>
+      </section>`;
+}
+
 function categoryHtml(branchKey, category) {
   const categoryId = escapeHtml(category.id);
   const addId = `add-${escapeHtml(branchKey)}-${categoryId}`;
@@ -305,6 +335,8 @@ function buildBranch(branch) {
   const categories = data.categories || [];
   const title = `${branch.label} 입대 준비물 체크리스트 | 관물대`;
   const categoriesHtml = categories.map((category) => categoryHtml(branch.key, category)).join("\n");
+  const restrictedHtml = restrictedSectionHtml(data);
+  const restrictedMarkup = restrictedHtml ? `\n      ${restrictedHtml}` : "";
   const html = `<!doctype html>
 <html lang="ko">
   ${head({ title, description: branch.meta, file: branch.file, jsonLd: itemListSchema(data, branch) })}
@@ -343,7 +375,7 @@ function buildBranch(branch) {
         <div class="list-scroll" id="categoryList" aria-live="polite">
           ${categoriesHtml}
         </div>
-      </section>
+      </section>${restrictedMarkup}
     </main>
     ${footer()}
     ${bodyScripts()}
